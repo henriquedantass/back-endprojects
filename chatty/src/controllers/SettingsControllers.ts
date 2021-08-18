@@ -3,15 +3,23 @@ import { SettingsServices } from '../services/SettingsServices';
 
 
 class SettingsControllers { 
-  async create(req: Request, res: Response){
+  async create(request: Request, response: Response){
 
-    const { chat, username} = req.body;
+    const { chat, username} = request.body;
 
     const settingsService = new SettingsServices();
 
-    const settings = await settingsService.create({chat, username});
+    try {
+      const settings = await settingsService.create({chat, username});
   
-    return res.json(settings)
+      return response.json(settings)
+
+    } catch (err) {
+      return response.status(400).json({
+        message: err.message,
+      })
+    }
+
 
   }
 }
