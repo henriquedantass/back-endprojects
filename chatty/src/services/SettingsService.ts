@@ -7,7 +7,7 @@ interface ISettingsServices {
 }
 
 
-class SettingsServices {
+class SettingsService {
 
   async create({chat, username}: ISettingsServices){
 
@@ -33,4 +33,4 @@ class SettingsServices {
 }
 
 
-export { SettingsServices }
+export { SettingsService }

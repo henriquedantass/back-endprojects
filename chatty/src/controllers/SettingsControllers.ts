@@ -1,5 +1,5 @@
 import {Request, Response} from 'express'
-import { SettingsServices } from '../services/SettingsServices';
+import { SettingsService } from '../services/SettingsService';
 
 
 class SettingsControllers { 
@@ -7,7 +7,7 @@ class SettingsControllers {
 
     const { chat, username} = request.body;
 
-    const settingsService = new SettingsServices();
+    const settingsService = new SettingsService();
 
     try {
       const settings = await settingsService.create({chat, username});
