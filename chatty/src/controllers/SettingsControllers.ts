@@ -1,6 +1,5 @@
 import {Request, Response} from 'express'
-import { getCustomRepository } from 'typeorm';
-import { SettingsRepositorie } from '../repositories/SettingsRepositorie';
+import { SettingsServices } from '../services/SettingsServices';
 
 
 class SettingsControllers { 
@@ -8,14 +7,9 @@ class SettingsControllers {
 
     const { chat, username} = req.body;
 
-    const settingsRepository = getCustomRepository(SettingsRepositorie);
-  
-    const settings = settingsRepository.create({
-      chat,
-      username,
-    })
-  
-    await settingsRepository.save(settings);
+    const settingsService = new SettingsServices();
+
+    const settings = await settingsService.create({chat, username});
   
     return res.json(settings)
 

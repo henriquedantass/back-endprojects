@@ -6,5 +6,4 @@ class SettingsRepositorie extends Repository<Settings> {
 
 }
 
-
 export { SettingsRepositorie }
