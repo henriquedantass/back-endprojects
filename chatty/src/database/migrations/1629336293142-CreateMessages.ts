@@ -40,7 +40,7 @@ export class CreateMessages1629336293142 implements MigrationInterface {
                         onDelete: "SET NULL",
                         onUpdate: "SET NULL",
                     }
-                ]
+                ]                                                       
             })
         )
     }
