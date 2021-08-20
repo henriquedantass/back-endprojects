@@ -26,12 +26,25 @@ document.querySelector("#start_chat").addEventListener("click", (event) => {
       }
     });
 
-    socket.on("list_all_messages_user", message => {
-      console.log(message)
+    socket.on("list_all_messages_user", (messages) => {
+      
+      var template_client = document.getElementById("message-user-template").innerHTML;
+      var template_admin = document.getElementById("admin-template").innerHTML;
+
+      messages.forEach((message) => {
+        if(message.admin_id === null) {
+          const rendered = Mustache.render(template_client , {
+            message: message.text,
+            email
+          })
+
+          document.getElementById("messages").innerHTML += rendered;
+          
+        }
+      })
+
     })
 
   })
-
-
 
 })
