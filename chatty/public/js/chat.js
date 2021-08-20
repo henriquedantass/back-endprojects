@@ -25,7 +25,13 @@ document.querySelector("#start_chat").addEventListener("click", (event) => {
         console.log(call)
       }
     });
+
+    socket.on("list_all_messages_user", message => {
+      console.log(message)
+    })
+
   })
+
 
 
 })
