@@ -1,30 +1,28 @@
-import { 
-  Entity, 
-  PrimaryColumn, 
-  Column, 
-  CreateDateColumn, 
-  ManyToOne, 
-  JoinColumn, 
-  UpdateDateColumn, 
+import {
+  Entity,
+  PrimaryColumn,
+  CreateDateColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+  UpdateDateColumn,
 } from "typeorm";
 
-import {User} from './Users'
-import { v4 as uuid} from "uuid";
-
+import { v4 as uuid } from "uuid";
+import { User } from "./Users";
 
 @Entity("connections")
-export class Connection {
-
+class Connection {
   @PrimaryColumn()
   id: string;
 
   @Column()
   admin_id: string;
-  
+
   @Column()
   socket_id: string;
 
-  @JoinColumn({name: "user_id"})
+  @JoinColumn({ name: "user_id" })
   @ManyToOne(() => User)
   user: User;
 
@@ -37,11 +35,11 @@ export class Connection {
   @UpdateDateColumn()
   updated_at: Date;
 
-
   constructor() {
-    if(!this.id) {
+    if (!this.id) {
       this.id = uuid();
     }
   }
-
 }
+
+export { Connection };
