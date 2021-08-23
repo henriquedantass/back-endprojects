@@ -11,7 +11,7 @@ socket.on("admin_list_all_users", (connections) => {
 
   connections.forEach((connection) => {
 
-    const rendered = Mustache.render(template , {
+    const rendered = Mustache.render(template, {
       email: connection.user.email,
       id: connection.socket_id,
     })
@@ -21,15 +21,15 @@ socket.on("admin_list_all_users", (connections) => {
   });
 })
 
-function call(id ) {
+function call(id) {
 
-  const connection = connectionsUser.find( connection => 
+  const connection = connectionsUser.find(connection =>
     connection.socket_id === id
   );
 
   const template = document.getElementById("admin_template").innerHTML;
 
-  const rendered = Mustache.render( template, { 
+  const rendered = Mustache.render(template, {
     email: connection.user.email,
     id: connection.user.id,
   });
@@ -40,7 +40,7 @@ function call(id ) {
     user_id: connection.user.id,
   }
 
-  socket.emit("admin_list_messages_by_user", params , messages => {
+  socket.emit("admin_list_messages_by_user", params, messages => {
 
     const divMessages = document.getElementById(`allMessages${connection.user_id}`)
 
@@ -66,8 +66,29 @@ function call(id ) {
 
       divMessages.appendChild(createDiv);
     })
-    
-  
   })
+
+};
+
+function sendMessage(id) {
+  const text = document.getElementById(`send_message_${id}`);
+
+  const params = {
+    text: text.value,
+    user_id: id,
+  }
+
+  socket.emit("admin_send_message", params);
+
+  const divMessages = document.getElementById(`allMessages${id}`);
+  const createDiv = document.createElement("div");
+
+  createDiv.className = "admin_message_admin";
+  createDiv.innerHTML = `Atendente: <span>${params.text}</span>`;
+  createDiv.innerHTML += `<span class="admin_date>${dayjs().format("DD/MM/YYYY HH:mm:ss")}`;
+
+  divMessages.appendChild(createDiv);
+
+  text.value = "";
 
 }
