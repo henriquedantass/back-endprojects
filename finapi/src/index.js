@@ -13,6 +13,14 @@ app.post("/account", (request, response) => {
   const { cpf, name } = request.body;
   const id = uuidv4();
 
+  const costumerAlreadyExist = costumers.some(
+    (costumer) => costumer.cpf === cpf
+  );
+
+  if (costumerAlreadyExist) {
+    return response.status(400).json({ error: "Usuário já existente" });
+  }
+
   costumers.push({
     cpf,
     name,
