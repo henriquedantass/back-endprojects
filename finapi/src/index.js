@@ -7,6 +7,21 @@ app.use(express.json());
 
 const customers = [];
 
+// MIDDLEWARE
+function verifyIfAccountExists(request, response, next) {
+  const { cpf } = request.headers;
+
+  const customer = customers.find((customer) => customer.cpf === cpf);
+
+  if (!customer) {
+    return response.status(400).json({ error: "Usuário não encontrado!" });
+  }
+
+  request.customer = customer;
+
+  return next();
+}
+
 app.listen(3333);
 
 app.post("/account", (request, response) => {
@@ -31,14 +46,8 @@ app.post("/account", (request, response) => {
   return response.status(201).send("Usuário criado com sucesso!");
 });
 
-app.get("/statement/:cpf", (request, response) => {
-  const { cpf } = request.params;
+app.get("/statement", verifyIfAccountExists, (request, response) => {
+  const { customer } = request;
 
-  const customer = customers.find((customer) => customer.cpf === cpf);
-
-  if (customer) {
-    return response.status(201).json(customer.statement);
-  } else {
-    return response.status(400).json({ error: "Usuário não encontrado" });
-  }
+  return response.json(customer.statement);
 });
