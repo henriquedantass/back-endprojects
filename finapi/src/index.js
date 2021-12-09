@@ -58,6 +58,29 @@ app.post("/account", (request, response) => {
   return response.status(201).send("Usuário criado com sucesso!");
 });
 
+app.get("/account", verifyIfAccountExists, (request, response) => {
+  const { customer } = request;
+
+  return response.json(customer);
+});
+
+app.delete("/account", verifyIfAccountExists, (request, response) => {
+  const { customer } = request;
+
+  customers.splice(customer, 1);
+
+  return response.status(200).send(customers);
+});
+
+app.put("/account", verifyIfAccountExists, (request, response) => {
+  const { name } = request.body;
+  const { customer } = request;
+
+  customer.name = name;
+
+  return response.status(201).send("Usuário atualizado com sucesso!");
+});
+
 app.get("/statement", verifyIfAccountExists, (request, response) => {
   const { customer } = request;
 
@@ -117,17 +140,10 @@ app.post("/withdraw", verifyIfAccountExists, (request, response) => {
   return response.status(201).send("Saque realizado com sucesso!");
 });
 
-app.put("/account", verifyIfAccountExists, (request, response) => {
-  const { name } = request.body;
+app.get("/balance", verifyIfAccountExists, (request, response) => {
   const { customer } = request;
 
-  customer.name = name;
+  const balance = getBalance(customer.statement);
 
-  return response.status(201).send("Usuário atualizado com sucesso!");
-});
-
-app.get("/account", verifyIfAccountExists, (request, response) => {
-  const { customer } = request;
-
-  return response.json(customer);
+  return response.json({ total: balance });
 });
