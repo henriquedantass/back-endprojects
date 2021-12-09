@@ -64,6 +64,21 @@ app.get("/statement", verifyIfAccountExists, (request, response) => {
   return response.json(customer.statement);
 });
 
+app.get("/statement/date", verifyIfAccountExists, (request, response) => {
+  const { customer } = request;
+  const { date } = request.query;
+
+  const dateFormat = new Date(date + " 00:00");
+
+  const statement = customer.statement.filter(
+    (statement) =>
+      statement.created_at.toDateString() ===
+      new Date(dateFormat).toDateString()
+  );
+
+  return response.json(statement);
+});
+
 app.post("/deposit", verifyIfAccountExists, (request, response) => {
   const { description, amount } = request.body;
 
